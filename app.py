@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, json
 import requests
 
 app = Flask(__name__)
@@ -58,34 +58,45 @@ def getPokeNameVowelCount(POKEMON):
 def getPokemonColor():
     # handle the POST request
     if request.method == 'POST':
+<<<<<<< main
         POKEMON_ID = request.form.get('POKEMON_ID')
         POKEMON_ID = POKEMON_ID.lower()
         # pokemon-species
         species_url = f"https://pokeapi.co/api/v2/pokemon-species/{POKEMON_ID}/"
         species_response = requests.get(species_url)
         species_pokemon_data = species_response.json()
+=======
+        data = json.loads(request.data)
+        poke_id = str(data['pokemon_id']).lower()
+        species_url = f"https://pokeapi.co/api/v2/pokemon-species/{poke_id}/"
+        species_response = requests.get(species_url)
+        species_pokemon_data = species_response.json()
+
+>>>>>>> local
         return {
             "name": species_pokemon_data['name'],
             "id": species_pokemon_data['id'],
             "base_happiness": species_pokemon_data['base_happiness'],
             "color": species_pokemon_data['color']['name']
         }
+<<<<<<< main
     # otherwise handle the GET request
     return '''
            <form method="POST">
                <div><label>Pokemon-ID: <input type="text" name="POKEMON_ID"></label></div>
                <input type="submit" value="Submit">
            </form>'''
+=======
+>>>>>>> local
 
 # geração
-@app.route('/generation', methods=['GET', 'POST'])
+@app.route('/generation', methods=['POST'])
 def getPokemonGeneration():
     # handle the POST request
     if request.method == 'POST':
-        POKEMON_ID = request.form.get('POKEMON_ID')
-        POKEMON_ID = POKEMON_ID.lower()
-        # pokemon-species
-        species_url = f"https://pokeapi.co/api/v2/pokemon-species/{POKEMON_ID}/"
+        data = json.loads(request.data)
+        poke_id = str(data['pokemon_id']).lower()
+        species_url = f"https://pokeapi.co/api/v2/pokemon-species/{poke_id}/"
         species_response = requests.get(species_url)
         species_pokemon_data = species_response.json()
         return {
@@ -94,21 +105,14 @@ def getPokemonGeneration():
             "base_happiness": species_pokemon_data['base_happiness'],
             "generation": species_pokemon_data['generation']['name']
         }
-    # otherwise handle the GET request
-    return '''
-           <form method="POST">
-               <div><label>Pokemon-ID: <input type="text" name="POKEMON_ID"></label></div>
-               <input type="submit" value="Submit">
-           </form>'''
 
-@app.route('/name', methods=['GET', 'POST'])
+@app.route('/name', methods=['POST'])
 def getPokemonJAName():
     # handle the POST request
     if request.method == 'POST':
-        POKEMON_ID = request.form.get('POKEMON_ID')
-        POKEMON_ID = POKEMON_ID.lower()
-        # pokemon-species
-        species_url = f"https://pokeapi.co/api/v2/pokemon-species/{POKEMON_ID}/"
+        data = json.loads(request.data)
+        poke_id = str(data['pokemon_id']).lower()
+        species_url = f"https://pokeapi.co/api/v2/pokemon-species/{poke_id}/"
         species_response = requests.get(species_url)
         species_pokemon_data = species_response.json()
         # args - lingua de index 0 até 10
