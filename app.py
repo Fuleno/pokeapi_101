@@ -6,11 +6,7 @@ app = Flask(__name__)
 # retornar 200
 @app.route('/')
 def hello_world():
-    return '''
-    <a href="/color">Color</a><br>
-    <a href="/generation">Generation</a><br>
-    <a href="/name">Name</a>
-    '''
+    return 'Hello world!'
 
 # id do pokemon
 @app.route('/<POKEMON>', methods=['GET'])
@@ -54,7 +50,7 @@ def getPokeNameVowelCount(POKEMON):
     }
 
 # cor, teste de post & body request
-@app.route('/color', methods=['GET', 'POST'])
+@app.route('/color', methods=['POST'])
 def getPokemonColor():
     # handle the POST request
     if request.method == 'POST':
@@ -134,12 +130,6 @@ def getPokemonJAName():
             "base_happiness": species_pokemon_data['base_happiness'],
             f"name_{arglanguage}": species_pokemon_data['names'][language]['name']
         }
-    # otherwise handle the GET request
-    return '''
-           <form method="POST">
-               <div><label>Pokemon-ID: <input type="text" name="POKEMON_ID"></label></div>
-               <input type="submit" value="Submit">
-           </form>'''
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host= '0.0.0.0', port=5000)
