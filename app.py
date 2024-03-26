@@ -54,28 +54,22 @@ def getPokeNameVowelCount(POKEMON):
     }
 
 # cor, teste de post & body request
-@app.route('/color', methods=['GET', 'POST'])
+@app.route('/color', methods=['POST'])
 def getPokemonColor():
     # handle the POST request
     if request.method == 'POST':
-        POKEMON_ID = request.form.get('POKEMON_ID')
-        POKEMON_ID = POKEMON_ID.lower()
+        content_type = request.headers.get('Content-Type')
+        if content_type == 'application/json':
+            json = request.get_json()
+            return json['pokemon_id']
+        else:
+            return 'Content-Type not supported!'
+        # POKEMON_ID = request.form.get('POKEMON_ID')
+        # POKEMON_ID = POKEMON_ID.lower()
         # pokemon-species
-        species_url = f"https://pokeapi.co/api/v2/pokemon-species/{POKEMON_ID}/"
-        species_response = requests.get(species_url)
-        species_pokemon_data = species_response.json()
-        return {
-            "name": species_pokemon_data['name'],
-            "id": species_pokemon_data['id'],
-            "base_happiness": species_pokemon_data['base_happiness'],
-            "color": species_pokemon_data['color']['name']
-        }
-    # otherwise handle the GET request
-    return '''
-           <form method="POST">
-               <div><label>Pokemon-ID: <input type="text" name="POKEMON_ID"></label></div>
-               <input type="submit" value="Submit">
-           </form>'''
+        # species_url = f"https://pokeapi.co/api/v2/pokemon-species/{POKEMON_ID}/"
+        # species_response = requests.get(species_url)
+        # species_pokemon_data = species_response.json()
 
 # geração
 @app.route('/generation', methods=['GET', 'POST'])
@@ -156,4 +150,4 @@ def getPokemonJAName():
            </form>'''
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host= '0.0.0.0', port=5000)
